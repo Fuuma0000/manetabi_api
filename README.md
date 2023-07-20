@@ -181,7 +181,7 @@ erDiagram
 | カラム名      | 説明         | 型          | Key     | Unique | Nullable |
 | ------------- | ------------ | ----------- | ------- | ------ | -------- |
 | location_id   | 場所 ID      | SERIAL      | PRIMARY | YES    | NO       |
-| location_name | 場所名       | VARCHAR(50) |         |        | NO       |
+| location_name | 場所名       | VARCHAR(50) |         | NO     | NO       |
 | created_at    | 作成した時間 | TIMESTAMP   |         | NO     | NO       |
 | updated_at    | 更新した時間 | TIMESTAMP   |         | NO     | NO       |
 
