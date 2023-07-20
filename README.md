@@ -28,7 +28,6 @@ erDiagram
         VARCHAR(50) user_name
         VARCHAR(255) email
         VARCHAR(255) password
-        TIMESTAMP registration_date
 		VARCHAR(255) profile_image_path
         TIMESTAMP created_at
         TIMESTAMP updated_at
@@ -128,7 +127,6 @@ erDiagram
 | user_name          | ユーザー名               | VARCHAR(50)  |         | NO     | NO       |
 | email              | メールアドレス           | VARCHAR(255) |         | NO     | NO       |
 | password           | ハッシュ化したパスワード | VARCHAR(255) |         | NO     | NO       |
-| registration_date  | 登録日時                 | TIMESTAMP    |         | NO     | NO       |
 | profile_image_path | プロフィール画像パス     | VARCHAR(255) |         | NO     | YES      |
 | created_at         | 作成した時間             | TIMESTAMP    |         | NO     | NO       |
 | updated_at         | 更新した時間             | TIMESTAMP    |         | NO     | NO       |
