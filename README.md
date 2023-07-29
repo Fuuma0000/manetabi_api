@@ -39,7 +39,6 @@ erDiagram
         TEXT description
         VARCHAR(255) thumbnail_path
         INTEGER cost
-        INTEGER location_id
         TIMESTAMP start_date
         TIMESTAMP end_date
         BOOLEAN is_public
@@ -141,7 +140,6 @@ erDiagram
 | description    | 説明文             | TEXT         |         |         | NO     | YES      |
 | thumbnail_path | サムネイル画像パス | VARCHAR(255) |         |         | NO     | YES      |
 | cost           | 費用               | INTEGER      |         |         | NO     | YES      |
-| location_id    | 場所 ID            | INTEGER      |         | FOREIGN | NO     | YES      |
 | start_date     | 開始日時           | TIMESTAMP    |         |         | NO     | YES      |
 | end_date       | 終了日時           | TIMESTAMP    |         |         | NO     | YES      |
 | is_public      | 公開フラグ         | BOOLEAN      | FALSE   |         | NO     | NO       |
