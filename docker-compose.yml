@@ -1,16 +1,21 @@
 version: "3.8"
 services:
   dev-postgres:
-    image: postgres:15.1-alpine
+    image: mysql:8
     container_name: manetabi_db
     ports:
-      - 5434:5432
+      - 3308:3306
     environment:
-      POSTGRES_USER: fuuma
-      POSTGRES_PASSWORD: fuuma
-      POSTGRES_DB: manetabi_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: manetabi_db
+      MYSQL_USER: fuuma
+      MYSQL_PASSWORD: password
+      LANG: C.utf8
+      LC_ALL: C.utf8
+      TZ: "Asia/Tokyo"
     volumes:
-      - ./postgresql/init:/docker-entrypoint-initdb.d
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/db:/var/lib/mysql #ここにデータ永続化するためのファイルが入る。
     restart: always
     networks:
       - lesson

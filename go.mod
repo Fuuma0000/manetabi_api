@@ -3,8 +3,8 @@ module github.com/Fuuma0000/manetabi_api
 go 1.20
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/labstack/echo v3.3.10+incompatible
-	github.com/lib/pq v1.10.9
 	golang.org/x/crypto v0.8.0
 )
 

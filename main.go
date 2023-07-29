@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 
-	_ "github.com/lib/pq"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var db *sql.DB // グローバル変数としてDB接続を定義
@@ -18,7 +18,7 @@ var db *sql.DB // グローバル変数としてDB接続を定義
 func main() {
 	// データベース接続
 	var err error
-	db, err = sql.Open("postgres", "host=127.0.0.1 port=5434 user=fuuma password=fuuma dbname=manetabi_db sslmode=disable")
+	db, err = sql.Open("mysql", "fuuma:password@tcp(127.0.0.1:3308)/manetabi_db")
 	if err != nil {
 		fmt.Println(err)
 		return // データベース接続が失敗した場合にプログラムを終了する
@@ -53,7 +53,7 @@ func SignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	newUser := model.User{Email: user.Email, Password: string(hash)}
-	_, err = db.Exec("INSERT INTO users (email, password) VALUES ($1, $2)", newUser.Email, newUser.Password)
+	_, err = db.Exec("INSERT INTO users (email, password) VALUES (?, ?)", newUser.Email, newUser.Password)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
