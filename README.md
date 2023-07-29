@@ -8,108 +8,109 @@
 erDiagram
     users ||--o{ plans: "投稿する"
     plans ||--o{ blocks: "持つ"
-    blocks ||--o{ photoes: "持つ"
+    blocks ||--o{ photos: "持つ"
     plans ||--o{ plans_locations: "登録する"
-		plans_locations||--o{ locations: "参照する"
-		users ||--o{ plans_bookmarks: "ブックマークする"
-		users ||--o{ blocks_bookmarks: "ブックマークする"
-		plans ||--o{ plans_bookmarks: "ブックマークされる"
+    plans_locations||--o{ locations: "参照する"
+    users ||--o{ plans_bookmarks: "ブックマークする"
+    users ||--o{ blocks_bookmarks: "ブックマークする"
+    plans ||--o{ plans_bookmarks: "ブックマークされる"
     users ||--o{ groups: "所属する"
-		plans_categories }o--|| categories: "参照する"
-		plans ||--o{ groups : "所属される"
-		plans ||--o{ plans_categories: "登録する"
-		plans ||--o{ plans_likes: "いいねされる"
-		users ||--o{ plans_likes: "いいねする"
-		blocks ||--o{ blocks_bookmarks: "ブックマークされる"
-
+    plans_categories }o--|| categories: "参照する"
+    plans ||--o{ groups : "所属される"
+    plans ||--o{ plans_categories: "登録する"
+    plans ||--o{ plans_likes: "いいねされる"
+    users ||--o{ plans_likes: "いいねする"
+    blocks ||--o{ blocks_bookmarks: "ブックマークされる"
 
     users {
-        SERIAL user_id PK
-        VARCHAR(50) user_name
-        VARCHAR(255) email
-        VARCHAR(255) password
-		VARCHAR(255) profile_image_path
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        user_id INT(255) PK
+        user_name VARCHAR(255)
+        email VARCHAR(255)
+        password VARCHAR(255)
+        profile_image_path VARCHAR(255)
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     plans {
-        SERIAL plan_id PK
-        INTEGER user_id FK
-        VARCHAR(100) title
-        TEXT description
-        VARCHAR(255) thumbnail_path
-        INTEGER cost
-        TIMESTAMP start_date
-        TIMESTAMP end_date
-        BOOLEAN is_public
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        plan_id INT(255) PK
+        user_id INT(255) FK
+        title VARCHAR(100)
+        description TEXT
+        thumbnail_path VARCHAR(255)
+        cost INT(255)
+        start_date TIMESTAMP
+        end_date TIMESTAMP
+        is_public BOOLEAN
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     blocks {
-        SERIAL block_id PK
-        INTEGER plan_id FK
-        VARCHAR(100) block_name
-        TIMESTAMP start_date
-        TIMESTAMP end_date
-        TEXT memo
-        INTEGER cost
-        VARCHAR(100) address
-        TEXT details
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        block_id INT(255) PK
+        plan_id INT(255) FK
+        block_name VARCHAR(255)
+        start_date TIMESTAMP
+        end_date TIMESTAMP
+        memo TEXT
+        cost INT(255)
+        address VARCHAR(255)
+        details TEXT
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
-    photoes {
-        SERIAL photo_id PK
-        INTEGER block_id FK
-        VARCHAR(255) photo_path
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+    photos {
+        photo_id INT(255) PK
+        block_id INT(255) FK
+        photo_path VARCHAR(255)
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     locations {
-        SERIAL location_id PK
-        VARCHAR(50) location_name
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        location_id INT(255) PK
+        location_name VARCHAR(255)
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     categories {
-        SERIAL category_id PK
-        VARCHAR(50) category_name
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        category_id INT(255) PK
+        category_name VARCHAR(255)
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     plans_bookmarks {
-        INTEGER user_id FK
-        INTEGER plan_id FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        user_id INT(255) FK
+        plan_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     blocks_bookmarks {
-        INTEGER user_id FK
-        INTEGER block_id FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        user_id INT(255) FK
+        block_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     plans_likes {
-        INTEGER user_id FK
-        INTEGER plan_id FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        user_id INT(255) FK
+        plan_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     plans_locations {
-        INTEGER plan_id FK
-        INTEGER location_id
+        plan_id INT(255) FK
+        location_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     plans_categories {
-        INTEGER plan_id FK
-        INTEGER category_id FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        plan_id INT(255) FK
+        category_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
     groups {
-        INTEGER plan_id PK
-        INTEGER user_id FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        plan_id INT(255) FK
+        user_id INT(255) FK
+        created_at TIMESTAMP
+        updated_at TIMESTAMP
     }
 
 ```
@@ -118,128 +119,128 @@ erDiagram
 
 ---
 
-## user (ユーザ)
+## **user**
 
-| カラム名           | 説明                     | 型           | Key     | Unique | Nullable |
-| ------------------ | ------------------------ | ------------ | ------- | ------ | -------- |
-| user_id            | ユーザ ID                | SERIAL       | PRIMARY | YES    | NO       |
-| user_name          | ユーザー名               | VARCHAR(50)  |         | NO     | NO       |
-| email              | メールアドレス           | VARCHAR(255) |         | NO     | NO       |
-| password           | ハッシュ化したパスワード | VARCHAR(255) |         | NO     | NO       |
-| profile_image_path | プロフィール画像パス     | VARCHAR(255) |         | NO     | YES      |
-| created_at         | 作成した時間             | TIMESTAMP    |         | NO     | NO       |
-| updated_at         | 更新した時間             | TIMESTAMP    |         | NO     | NO       |
+| カラム名           | 説明                     | 型           | Key         | AUTOINCREMENT | Unique | Nullable |
+| ------------------ | ------------------------ | ------------ | ----------- | ------------- | ------ | -------- |
+| user_id            | ユーザ ID                | INT(255)     | PRIMARY KEY | YES           |        | NO       |
+| user_name          | ユーザー名               | VARCHAR(255) |             |               |        | NO       |
+| email              | メールアドレス           | VARCHAR(255) |             |               | YES    | NO       |
+| password           | ハッシュ化したパスワード | VARCHAR(255) |             |               |        | NO       |
+| profile_image_path | プロフィール画像パス     | VARCHAR(255) |             |               |        | YES      |
+| created_at         | 作成した時間             | TIMESTAMP    |             |               |        | NO       |
+| updated_at         | 更新した時間             | TIMESTAMP    |             |               |        | NO       |
 
-## plans (プランと投稿したもの)
+## **plans**
 
-| カラム名       | 説明               | 型           | Default | Key     | Unique | Nullable |
-| -------------- | ------------------ | ------------ | ------- | ------- | ------ | -------- |
-| plan_id        | プラン ID          | SERIAL       |         | PRIMARY | YES    | NO       |
-| user_id        | ユーザ ID          | INTEGER      |         | FOREIGN | NO     | NO       |
-| title          | タイトル           | VARCHAR(100) |         |         | NO     | NO       |
-| description    | 説明文             | TEXT         |         |         | NO     | YES      |
-| thumbnail_path | サムネイル画像パス | VARCHAR(255) |         |         | NO     | YES      |
-| cost           | 費用               | INTEGER      |         |         | NO     | YES      |
-| start_date     | 開始日時           | TIMESTAMP    |         |         | NO     | YES      |
-| end_date       | 終了日時           | TIMESTAMP    |         |         | NO     | YES      |
-| is_public      | 公開フラグ         | BOOLEAN      | FALSE   |         | NO     | NO       |
-| created_at     | 作成した時間       | TIMESTAMP    |         |         | NO     | NO       |
-| updated_at     | 更新した時間       | TIMESTAMP    |         |         | NO     | NO       |
+| カラム名       | 説明               | 型           | Default | Key         | AUTOINCREMENT | Unique | Nullable |
+| -------------- | ------------------ | ------------ | ------- | ----------- | ------------- | ------ | -------- |
+| plan_id        | プラン ID          | INT(255)     |         | PRIMARY KEY | YES           |        | NO       |
+| user_id        | ユーザ ID          | INT(255)     |         | FOREIGN KEY |               |        | NO       |
+| title          | タイトル           | VARCHAR(100) |         |             |               |        | NO       |
+| description    | 説明文             | TEXT         |         |             |               |        | YES      |
+| thumbnail_path | サムネイル画像パス | VARCHAR(255) |         |             |               |        | YES      |
+| cost           | 費用               | INT(255)     |         |             |               |        | YES      |
+| start_date     | 開始日時           | TIMESTAMP    |         |             |               |        | YES      |
+| end_date       | 終了日時           | TIMESTAMP    |         |             |               |        | YES      |
+| is_public      | 公開フラグ         | BOOLEAN      | FALSE   |             |               |        | NO       |
+| created_at     | 作成した時間       | TIMESTAMP    |         |             |               |        | NO       |
+| updated_at     | 更新した時間       | TIMESTAMP    |         |             |               |        | NO       |
 
-## blocks (プランの中にあるブロック)
+## **blocks**
 
-| カラム名   | 説明         | 型           | Key     | Unique | Nullable |
-| ---------- | ------------ | ------------ | ------- | ------ | -------- |
-| block_id   | ブロック ID  | SERIAL       | PRIMARY | YES    | NO       |
-| plan_id    | プラン ID    | INTEGER      | FOREIGN | NO     | NO       |
-| block_name | ブロック名   | VARCHAR(100) |         | NO     | NO       |
-| start_date | 開始日時     | TIMESTAMP    |         | NO     | NO       |
-| end_date   | 終了日時     | TIMESTAMP    |         | NO     | NO       |
-| memo       | メモ         | TEXT         |         | NO     | YES      |
-| cost       | 費用         | INTEGER      |         | NO     | YES      |
-| address    | 住所         | VARCHAR(100) |         | NO     | YES      |
-| details    | 詳細         | TEXT         |         | NO     | YES      |
-| created_at | 作成した時間 | TIMESTAMP    |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP    |         | NO     | NO       |
+| カラム名   | 説明         | 型           | Key         | AUTOINCREMENT | Unique | Nullable |
+| ---------- | ------------ | ------------ | ----------- | ------------- | ------ | -------- |
+| block_id   | ブロック ID  | INT(255)     | PRIMARY KEY | YES           |        | NO       |
+| plan_id    | プラン ID    | INT(255)     | FOREIGN KEY |               |        | NO       |
+| block_name | ブロック名   | VARCHAR(255) |             |               |        | NO       |
+| start_date | 開始日時     | TIMESTAMP    |             |               |        | NO       |
+| end_date   | 終了日時     | TIMESTAMP    |             |               |        | NO       |
+| memo       | メモ         | TEXT         |             |               |        | YES      |
+| cost       | 費用         | INT          |             |               |        | YES      |
+| address    | 住所         | VARCHAR(255) |             |               |        | YES      |
+| details    | 詳細         | TEXT         |             |               |        | YES      |
+| created_at | 作成した時間 | TIMESTAMP    |             |               |        | NO       |
+| updated_at | 更新した時間 | TIMESTAMP    |             |               |        | NO       |
 
-## photoes (ブロックの中にある写真)
+## **photos**
 
-| カラム名   | 説明         | 型           | Key     | Unique | Nullable |
-| ---------- | ------------ | ------------ | ------- | ------ | -------- |
-| photo_id   | 画像 ID      | SERIAL       | PRIMARY | YES    | NO       |
-| block_id   | ブロック ID  | INTEGER      | FOREIGN | NO     | NO       |
-| photo_path | 画像パス     | VARCHAR(255) |         | NO     | NO       |
-| created_at | 作成した時間 | TIMESTAMP    |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP    |         | NO     | NO       |
+| カラム名   | 説明         | 型           | Key         | AUTOINCREMENT | Unique | Nullable |
+| ---------- | ------------ | ------------ | ----------- | ------------- | ------ | -------- |
+| photo_id   | 画像 ID      | INT(255)     | PRIMARY KEY | YES           |        | NO       |
+| block_id   | ブロック ID  | INT(255)     | FOREIGN KEY |               |        | NO       |
+| photo_path | 画像パス     | VARCHAR(255) |             |               |        | NO       |
+| created_at | 作成した時間 | TIMESTAMP    |             |               |        | NO       |
+| updated_at | 更新した時間 | TIMESTAMP    |             |               |        | NO       |
 
-## locations (検索用の場所)
+## **locations**
 
-| カラム名      | 説明         | 型          | Key     | Unique | Nullable |
-| ------------- | ------------ | ----------- | ------- | ------ | -------- |
-| location_id   | 場所 ID      | SERIAL      | PRIMARY | YES    | NO       |
-| location_name | 場所名       | VARCHAR(50) |         | NO     | NO       |
-| created_at    | 作成した時間 | TIMESTAMP   |         | NO     | NO       |
-| updated_at    | 更新した時間 | TIMESTAMP   |         | NO     | NO       |
+| カラム名      | 説明         | 型           | Key         | AUTOINCREMENT | Unique | Nullable |
+| ------------- | ------------ | ------------ | ----------- | ------------- | ------ | -------- |
+| location_id   | 場所 ID      | INT(255)     | PRIMARY KEY | YES           |        | NO       |
+| location_name | 場所名       | VARCHAR(255) |             |               | YES    | NO       |
+| created_at    | 作成した時間 | TIMESTAMP    |             |               |        | NO       |
+| updated_at    | 更新した時間 | TIMESTAMP    |             |               |        | NO       |
 
-## categories (検索用のカテゴリ)
+## **categories**
 
-| カラム名      | 説明         | 型          | Key     | Unique | Nullable |
-| ------------- | ------------ | ----------- | ------- | ------ | -------- |
-| category_id   | カテゴリ ID  | SERIAL      | PRIMARY | YES    | NO       |
-| category_name | カテゴリ名   | VARCHAR(50) |         |        | NO       |
-| created_at    | 作成した時間 | TIMESTAMP   |         | NO     | NO       |
-| updated_at    | 更新した時間 | TIMESTAMP   |         | NO     | NO       |
+| カラム名      | 説明         | 型           | Key         | AUTOINCREMENT | Unique | Nullable |
+| ------------- | ------------ | ------------ | ----------- | ------------- | ------ | -------- |
+| category_id   | カテゴリ ID  | INT(255)     | PRIMARY KEY | YES           |        | NO       |
+| category_name | カテゴリ名   | VARCHAR(255) |             |               | YES    | NO       |
+| created_at    | 作成した時間 | TIMESTAMP    |             |               |        | NO       |
+| updated_at    | 更新した時間 | TIMESTAMP    |             |               |        | NO       |
 
-## plans_bookmarks (プランのブックマーク)
+## **plans_bookmarks**
 
-| カラム名   | 説明         | 型        | Key     | Unique | Nullable |
-| ---------- | ------------ | --------- | ------- | ------ | -------- |
-| user_id    | ユーザ ID    | INTEGER   | FOREIGN | NO     | NO       |
-| plan_id    | ブロック ID  | INTEGER   | FOREIGN | NO     | NO       |
-| created_at | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名   | 説明         | 型        | Key         | Unique | Nullable |     |
+| ---------- | ------------ | --------- | ----------- | ------ | -------- | --- |
+| user_id    | ユーザ ID    | INT(255)  | FOREIGN KEY |        | NO       |     |
+| plan_id    | ブロック ID  | INT(255)  | FOREIGN KEY |        | NO       |     |
+| created_at | 作成した時間 | TIMESTAMP |             |        | NO       |     |
+| updated_at | 更新した時間 | TIMESTAMP |             |        | NO       |     |
 
-## blocks_bookmarks (ブロックのブックマーク)
+## **blocks_bookmarks**
 
-| カラム名   | 説明         | 型        | Key     | Unique | Nullable |
-| ---------- | ------------ | --------- | ------- | ------ | -------- |
-| user_id    | ユーザ ID    | INTEGER   | FOREIGN | NO     | NO       |
-| block_id   | ブロック ID  | INTEGER   | FOREIGN | NO     | NO       |
-| created_at | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名   | 説明         | 型        | Key         | Unique | Nullable |
+| ---------- | ------------ | --------- | ----------- | ------ | -------- |
+| user_id    | ユーザ ID    | INT(255)  | FOREIGN KEY |        | NO       |
+| block_id   | ブロック ID  | INT(255)  | FOREIGN KEY |        | NO       |
+| created_at | 作成した時間 | TIMESTAMP |             |        | NO       |
+| updated_at | 更新した時間 | TIMESTAMP |             |        | NO       |
 
-## plans_likes (プランのいいね)
+## **plans_likes**
 
-| カラム名   | 説明         | 型        | Key     | Unique | Nullable |
-| ---------- | ------------ | --------- | ------- | ------ | -------- |
-| user_id    | ユーザ ID    | INTEGER   | FOREIGN | NO     | NO       |
-| plan_id    | 投稿 ID      | INTEGER   | FOREIGN | NO     | NO       |
-| created_at | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名   | 説明         | 型        | Key         | Unique | Nullable |
+| ---------- | ------------ | --------- | ----------- | ------ | -------- |
+| user_id    | ユーザ ID    | INT(255)  | FOREIGN KEY |        | NO       |
+| plan_id    | 投稿 ID      | INT(255)  | FOREIGN KEY |        | NO       |
+| created_at | 作成した時間 | TIMESTAMP |             |        | NO       |
+| updated_at | 更新した時間 | TIMESTAMP |             |        | NO       |
 
-## plans_locations (プランと場所を紐づける)
+## **plans_locations**
 
-| カラム名    | 説明         | 型        | Key     | Unique | Nullable |
-| ----------- | ------------ | --------- | ------- | ------ | -------- |
-| plan_id     | 投稿 ID      | INTEGER   | FOREIGN | NO     | NO       |
-| location_id | 場所 ID      | INTEGER   | FOREIGN | NO     | NO       |
-| created_at  | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at  | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名    | 説明         | 型        | Key         | Unique | Nullable |
+| ----------- | ------------ | --------- | ----------- | ------ | -------- |
+| plan_id     | 投稿 ID      | INT(255)  | FOREIGN KEY |        | NO       |
+| location_id | 場所 ID      | INT(255)  | FOREIGN KEY |        | NO       |
+| created_at  | 作成した時間 | TIMESTAMP |             |        | NO       |
+| updated_at  | 更新した時間 | TIMESTAMP |             |        | NO       |
 
-## plans_categories (プランとカテゴリを紐づける)
+## **plans_categories プランのカテゴリーを保存する**
 
-| カラム名    | 説明         | 型        | Key     | Unique | Nullable |
-| ----------- | ------------ | --------- | ------- | ------ | -------- |
-| plan_id     | 投稿 ID      | INTEGER   | FOREIGN | NO     | NO       |
-| category_id | カテゴリ ID  | INTEGER   | FOREIGN | NO     | NO       |
-| created_at  | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at  | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名    | 説明         | 型        | Key         | Unique | Nullable |
+| ----------- | ------------ | --------- | ----------- | ------ | -------- |
+| plan_id     | 投稿 ID      | INT(255)  | FOREIGN KEY |        | NO       |
+| category_id | カテゴリ ID  | INT(255)  | FOREIGN KEY |        | NO       |
+| created_at  | 作成した時間 | TIMESTAMP |             |        | NO       |
+| updated_at  | 更新した時間 | TIMESTAMP |             |        | NO       |
 
-## groups (ユーザとプランを紐づける)
+## **groups プランにユーザが所属する**
 
-| カラム名   | 説明         | 型        | Key     | Unique | Nullable |
-| ---------- | ------------ | --------- | ------- | ------ | -------- |
-| plan_id    | プラン ID    | INTEGER   | FOREIGN | NO     | NO       |
-| user_id    | ユーザ ID    | INTEGER   | FOREIGN | NO     | NO       |
-| created_at | 作成した時間 | TIMESTAMP |         | NO     | NO       |
-| updated_at | 更新した時間 | TIMESTAMP |         | NO     | NO       |
+| カラム名   | 説明         | 型        | Key         | Unique | Nullable |
+| ---------- | ------------ | --------- | ----------- | ------ | -------- |
+| plan_id    | プラン ID    | INT(255)  | FOREIGN KEY |        | NO       |
+| user_id    | ユーザ ID    | INT(255)  | FOREIGN KEY |        | NO       |
+| created_at | 作成した時間 | TIMESTAMP |             |        | NO       |
+| updated_at | 更新した時間 | TIMESTAMP |             |        | NO       |
