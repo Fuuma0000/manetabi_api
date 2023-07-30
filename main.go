@@ -42,6 +42,12 @@ func SignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	// メールアドレスの重複チェック
+	b := checkDuplicateEmail(user.Email)
+	if b { // 重複あり
+		return c.JSON(http.StatusBadRequest, "メールアドレスが重複しています")
+	}
+
 	// パスワードのハッシュ化
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
@@ -63,4 +69,19 @@ func SignUp(c echo.Context) error {
 	}
 
 	return c.String(http.StatusOK, "Hello, World!")
+}
+
+// メールアドレスの重複チェック
+func checkDuplicateEmail(email string) bool {
+	q := `SELECT * FROM users WHERE email = ?`
+	row := db.QueryRow(q, email)
+
+	// メールアドレスが重複している場合、ErrNoRows が返らないことをチェック
+	if err := row.Scan(); err != nil {
+		if err == sql.ErrNoRows {
+			return false // 重複なし
+		}
+	}
+
+	return true // 重複あり
 }
