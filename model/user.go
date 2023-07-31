@@ -14,6 +14,10 @@ type User struct {
 }
 
 type UserResponse struct {
-	ID    uint   `json:"id"`
-	Email string `json:"email"`
+	ID               uint      `json:"id"`
+	UserName         string    `json:"user_name"`
+	Email            string    `json:"email"`
+	ProfileImagePath string    `json:"profile_image_path"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
 }

@@ -7,6 +7,8 @@ import (
 
 func NewRouter(uc controller.IUserController) *echo.Echo {
 	e := echo.New()
-	// e.POST("/signup", uc.SignUp)
+
+	// ここにルーティングを書いていく
+	e.POST("/signup", uc.SignUp)
 	return e
 }
