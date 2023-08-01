@@ -10,5 +10,6 @@ func NewRouter(uc controller.IUserController) *echo.Echo {
 
 	// ここにルーティングを書いていく
 	e.POST("/signup", uc.SignUp)
+	e.POST("/login", uc.Login)
 	return e
 }
