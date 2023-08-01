@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Fuuma0000/manetabi_api/model"
@@ -46,11 +45,9 @@ func (uc *userController) Login(c echo.Context) error {
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	fmt.Println("login")
 	if err := uc.uu.Login(user); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	fmt.Println("login success")
 	// TODO:ログインが脆弱だから後でなんかする
 	return c.NoContent(http.StatusOK)
 }
