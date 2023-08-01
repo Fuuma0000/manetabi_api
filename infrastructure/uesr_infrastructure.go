@@ -2,12 +2,15 @@ package infrastructure
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/Fuuma0000/manetabi_api/model"
 )
 
 type IUserInfrastructer interface {
 	CreateUser(user *model.User) error
+	GetUserByEmail(user *model.User, email string) error
+	CheckDuplicateEmail(email string) (bool, string, error)
 }
 
 type userInfrastructer struct {
@@ -25,4 +28,44 @@ func (ui *userInfrastructer) CreateUser(user *model.User) error {
 		return err
 	}
 	return nil
+}
+
+func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) error {
+	q := `SELECT * FROM users WHERE email = ? LIMIT 1`
+	row := ui.db.QueryRow(q, email)
+
+	err := row.Scan(&user.ID, &user.UserName, &user.Email, &user.Password, &user.ProfileImagePath, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("ユーザーが見つかりませんでした")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) error {
+// 	q := `SELECT * FROM users WHERE email = ?`
+// 	err := ui.db.QueryRow(q, email).Scan(user)
+// 	fmt.Println("GetUserByEmail now")
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// メールアドレスの重複チェック
+func (ui *userInfrastructer) CheckDuplicateEmail(email string) (bool, string, error) {
+	q := `SELECT COUNT(*) FROM users WHERE email = ?`
+	row := ui.db.QueryRow(q, email)
+	var count int
+	err := row.Scan(&count)
+	if err != nil {
+		return true, "メールアドレスの重複チェックに失敗しました", err
+	}
+	if count > 0 {
+		return true, "メールアドレスが重複しています", err
+	}
+	return false, "", err
 }
