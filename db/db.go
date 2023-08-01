@@ -11,7 +11,7 @@ import (
 // NewDB DB接続
 func NewDB() *sql.DB {
 	// DB接続
-	db, err := sql.Open("mysql", "fuuma:password@tcp(127.0.0.1:3308)/manetabi_db")
+	db, err := sql.Open("mysql", "fuuma:password@tcp(127.0.0.1:3308)/manetabi_db?parseTime=true&loc=Asia%2FTokyo")
 
 	if err != nil {
 		log.Fatalln(err)
