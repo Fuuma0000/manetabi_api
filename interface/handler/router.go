@@ -13,5 +13,7 @@ func NewRouter(uc controller.IUserController, pc controller.IPlanController) *ec
 	e.POST("/login", uc.Login)
 	p := e.Group("/plans")
 	p.POST("", pc.CreatePlan)
+	p.GET("", pc.GetPlansByUserID)
+	p.GET("/:id", pc.GetPlanByID)
 	return e
 }
