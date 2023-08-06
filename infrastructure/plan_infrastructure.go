@@ -19,6 +19,10 @@ func NewPlanInfrastructer(db *sql.DB) IPlanInfrastructer {
 }
 
 func (pi *planInfrastructer) CreatePlan(plan *model.Plan) error {
-	// TODO: plan作成処理
+	q := `INSERT INTO plans (user_id, title, description, thumbnail_path, cost, start_date, end_date, is_public) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+	_, err := pi.db.Exec(q, plan.UserID, plan.Title, plan.Description, plan.Thumbnail, plan.Cost, plan.StartDate, plan.EndDate, plan.IsPublic)
+	if err != nil {
+		return err
+	}
 	return nil
 }
