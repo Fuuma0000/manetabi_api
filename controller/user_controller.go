@@ -48,6 +48,6 @@ func (uc *userController) Login(c echo.Context) error {
 	if err := uc.uu.Login(user); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	// TODO:ログインが脆弱だから後でなんかする
+	// TODO:ログインが脆弱だから後でなんかする jwtとか
 	return c.NoContent(http.StatusOK)
 }
