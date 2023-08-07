@@ -1,6 +1,7 @@
 package presenter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go/v4"
@@ -50,20 +51,25 @@ func (jh *JWTHandler) GenerateJWTToken(userID uint, expiration time.Duration) (s
 func (jh *JWTHandler) VerifyJWTToken(tokenString string) (*JWTClaims, error) {
 	claims := &JWTClaims{}
 
-	// トークンを検証
+	// Token verification
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return jh.secretKey, nil
+		// Verify the signing method is HS256 and return the secret key
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); ok {
+			return jh.secretKey, nil
+		}
+		return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 	})
-	// 検証に失敗した場合
+
+	// If verification fails
 	if err != nil {
 		return nil, err
 	}
 
-	// 検証に成功したが、トークンが無効の場合
+	// If token is invalid
 	if !token.Valid {
 		return nil, err
 	}
 
-	// 検証に成功した場合は、クレームを返す
+	// If verification is successful, return the claims
 	return claims, nil
 }

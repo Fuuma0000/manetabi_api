@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/Fuuma0000/manetabi_api/controller"
 	"github.com/Fuuma0000/manetabi_api/db"
 	"github.com/Fuuma0000/manetabi_api/infrastructure"
@@ -14,9 +16,8 @@ import (
 func main() {
 	// DB接続
 	db := db.NewDB()
-
 	// JWTのシークレットキー
-	secretKey := []byte("your-secret-key")
+	secretKey := []byte(os.Getenv("SECRET"))
 	// JWTHandlerのインスタンス作成
 	jwtHandler := presenter.NewJWTHandler(secretKey)
 
