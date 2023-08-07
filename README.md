@@ -1,6 +1,17 @@
-# リレーション
+# 依存関係
+
+```mermaid
+
+graph TD
+    controller --> usecase
+    usecase --> model
+    infrastructure --> model
+
+```
 
 ---
+
+# リレーション
 
 ```mermaid
 erDiagram
@@ -114,8 +125,6 @@ erDiagram
 ```
 
 # データ設計
-
----
 
 ## **user**
 
