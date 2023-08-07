@@ -2,17 +2,15 @@ package usecase
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/Fuuma0000/manetabi_api/infrastructure"
 	"github.com/Fuuma0000/manetabi_api/model"
-	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
-	Login(user model.User) (string, error)
+	Login(user model.User) error
 	CheckDuplicateEmail(email string) (bool, string, error)
 }
 
@@ -48,25 +46,16 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 	return resUser, nil
 }
 
-func (uu *userUsecase) Login(user model.User) (string, error) {
+func (uu *userUsecase) Login(user model.User) error {
 	storedUser := model.User{}
 	if err := uu.ui.GetUserByEmail(&storedUser, user.Email); err != nil {
-		return "", err
+		return err
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
 	if err != nil {
-		return "", err
+		return err
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": storedUser.ID,
-		"exp":     time.Now().Add(time.Hour * 12).Unix(),
-	})
-	secret := "your-secret-key" // 安全なランダムな文字列に置き換えること
-	tokenString, err := token.SignedString([]byte(secret))
-	if err != nil {
-		return "", err
-	}
-	return tokenString, nil
+	return nil
 }
 
 func (uu *userUsecase) CheckDuplicateEmail(email string) (bool, string, error) {
