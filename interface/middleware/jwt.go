@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Fuuma0000/manetabi_api/interface/presenter"
 	"github.com/labstack/echo"
@@ -15,6 +17,9 @@ func JWTMiddleware(jwtHandler presenter.JWTHandler) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			// Authorizationヘッダーからトークンを取得
 			tokenString := c.Request().Header.Get("Authorization")
+			tokenString = removeBearerPrefix(tokenString)
+			// fmt.Println("tokenString")
+			// fmt.Println(tokenString)
 			// トークンがなければエラー
 			if tokenString == "" {
 				return c.JSON(http.StatusUnauthorized, "Authorization header is missing")
@@ -22,8 +27,13 @@ func JWTMiddleware(jwtHandler presenter.JWTHandler) echo.MiddlewareFunc {
 
 			// トークンを検証
 			claims, err := jwtHandler.VerifyJWTToken(tokenString)
+			// fmt.Println("claims")
+			// fmt.Println(claims)
+			// fmt.Println("err")
+			// fmt.Println(err)
 			// 検証に失敗したらエラー
 			if err != nil {
+				fmt.Println(err)
 				return c.JSON(http.StatusUnauthorized, "Invalid token")
 			}
 
@@ -32,4 +42,13 @@ func JWTMiddleware(jwtHandler presenter.JWTHandler) echo.MiddlewareFunc {
 			return next(c)
 		}
 	}
+}
+
+func removeBearerPrefix(tokenString string) string {
+	// トークン文字列が "Bearer "で始まっているか確認
+	if len(tokenString) > 7 && strings.ToLower(tokenString[0:7]) == "bearer " {
+		// "Bearer "を除いたトークン文字列を返す
+		return tokenString[7:]
+	}
+	return tokenString
 }
