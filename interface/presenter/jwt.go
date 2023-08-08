@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dgrijalva/jwt-go/v4"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type JWTHandler struct {
@@ -31,7 +31,7 @@ func (jh *JWTHandler) GenerateJWTToken(userID uint, expiration time.Duration) (s
 		// 有効期限
 		StandardClaims: jwt.StandardClaims{
 			// 有効期限の設定
-			ExpiresAt: jwt.At(time.Now().Add(expiration)),
+			ExpiresAt: time.Now().Add(expiration).Unix(),
 		},
 	}
 	// JWTの署名部分
