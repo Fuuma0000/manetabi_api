@@ -25,7 +25,7 @@ func main() {
 	userInfrastructure := infrastructure.NewUserInfrastructer(db)
 	planInfrastructure := infrastructure.NewPlanInfrastructer(db)
 	// ユースケース層
-	userUsecase := usecase.NewUserUsecase(userInfrastructure)
+	userUsecase := usecase.NewUserUsecase(userInfrastructure, *jwtHandler)
 	planUsecase := usecase.NewPlanUsecase(planInfrastructure)
 	// コントローラー層
 	userController := controller.NewUserController(userUsecase)

@@ -2,24 +2,29 @@ package usecase
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Fuuma0000/manetabi_api/infrastructure"
+	"github.com/Fuuma0000/manetabi_api/interface/presenter"
 	"github.com/Fuuma0000/manetabi_api/model"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
-	Login(user model.User) error
+	Login(user model.User) (map[string]string, error)
 	CheckDuplicateEmail(email string) (bool, string, error)
 }
 
 type userUsecase struct {
-	ui infrastructure.IUserInfrastructer
+	ui  infrastructure.IUserInfrastructer
+	jwt presenter.JWTHandler
 }
 
-func NewUserUsecase(ui infrastructure.IUserInfrastructer) IUserUsecase {
-	return &userUsecase{ui}
+func NewUserUsecase(ui infrastructure.IUserInfrastructer, jwt presenter.JWTHandler) IUserUsecase {
+	return &userUsecase{
+		ui, jwt,
+	}
 }
 
 func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
@@ -46,16 +51,27 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 	return resUser, nil
 }
 
-func (uu *userUsecase) Login(user model.User) error {
+func (uu *userUsecase) Login(user model.User) (map[string]string, error) {
 	storedUser := model.User{}
 	if err := uu.ui.GetUserByEmail(&storedUser, user.Email); err != nil {
-		return err
+		return nil, err
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
+
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	// JWTトークンを生成
+	expiration := time.Hour * 24 // トークンの有効期限を1日に設定
+	token, err := uu.jwt.GenerateJWTToken(storedUser.ID, expiration)
+	if err != nil {
+		return nil, err
+	}
+	// レスポンスにトークンを含めて返す
+	response := map[string]string{
+		"token": token,
+	}
+	return response, nil
 }
 
 func (uu *userUsecase) CheckDuplicateEmail(email string) (bool, string, error) {
