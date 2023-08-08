@@ -2,7 +2,9 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
+	"github.com/Fuuma0000/manetabi_api/interface/presenter"
 	"github.com/Fuuma0000/manetabi_api/model"
 	"github.com/Fuuma0000/manetabi_api/usecase"
 	"github.com/labstack/echo"
@@ -14,11 +16,14 @@ type IUserController interface {
 }
 
 type userController struct {
-	uu usecase.IUserUsecase
+	uu  usecase.IUserUsecase
+	jwt presenter.JWTHandler
 }
 
 func NewUserController(uu usecase.IUserUsecase) IUserController {
-	return &userController{uu}
+	return &userController{
+		uu: uu,
+	}
 }
 
 func (uc *userController) SignUp(c echo.Context) error {
@@ -45,10 +50,18 @@ func (uc *userController) Login(c echo.Context) error {
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	tokenString, err := uc.uu.Login(user)
-	c.Response().Header().Set("Authorization", "Bearer "+tokenString)
+	if err := uc.uu.Login(user); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	// JWTトークンを生成
+	expiration := time.Hour * 24 // トークンの有効期限を1日に設定
+	token, err := uc.jwt.GenerateJWTToken(user.ID, expiration)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, "Login success")
+	// レスポンスにトークンを含めて返す
+	response := map[string]string{
+		"token": token,
+	}
+	return c.JSON(http.StatusOK, response)
 }
