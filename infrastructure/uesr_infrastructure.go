@@ -45,16 +45,6 @@ func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) erro
 	return nil
 }
 
-// func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) error {
-// 	q := `SELECT * FROM users WHERE email = ?`
-// 	err := ui.db.QueryRow(q, email).Scan(user)
-// 	fmt.Println("GetUserByEmail now")
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
 // メールアドレスの重複チェック
 func (ui *userInfrastructer) CheckDuplicateEmail(email string) (bool, string, error) {
 	q := `SELECT COUNT(*) FROM users WHERE email = ?`
