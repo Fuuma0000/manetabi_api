@@ -18,20 +18,12 @@ func JWTMiddleware(jwtHandler presenter.JWTHandler) echo.MiddlewareFunc {
 			// Authorizationヘッダーからトークンを取得
 			tokenString := c.Request().Header.Get("Authorization")
 			tokenString = removeBearerPrefix(tokenString)
-			// fmt.Println("tokenString")
-			// fmt.Println(tokenString)
-			// トークンがなければエラー
 			if tokenString == "" {
 				return c.JSON(http.StatusUnauthorized, "Authorization header is missing")
 			}
 
 			// トークンを検証
 			claims, err := jwtHandler.VerifyJWTToken(tokenString)
-			// fmt.Println("claims")
-			// fmt.Println(claims)
-			// fmt.Println("err")
-			// fmt.Println(err)
-			// 検証に失敗したらエラー
 			if err != nil {
 				fmt.Println(err)
 				return c.JSON(http.StatusUnauthorized, "Invalid token")
