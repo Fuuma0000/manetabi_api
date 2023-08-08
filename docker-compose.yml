@@ -14,7 +14,7 @@ services:
       LC_ALL: C.utf8
       TZ: "Asia/Tokyo"
     volumes:
-      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./db:/docker-entrypoint-initdb.d
       - ./mysql/db:/var/lib/mysql #ここにデータ永続化するためのファイルが入る。
     restart: always
     networks:
