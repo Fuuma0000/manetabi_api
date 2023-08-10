@@ -29,7 +29,6 @@ func (pc *planController) CreatePlan(c echo.Context) error {
 	if err := c.Bind(&plan); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	// plan.UserID = uint(userId.(float64))
 	plan.UserID = userID.(uint)
 	resPlan, err := pc.pu.CreatePlan(plan)
 	if err != nil {
