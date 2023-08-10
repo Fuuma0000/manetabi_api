@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -32,7 +31,6 @@ func (pc *planController) CreatePlan(c echo.Context) error {
 	}
 	// plan.UserID = uint(userId.(float64))
 	plan.UserID = userID.(uint)
-	fmt.Println(plan.UserID)
 	resPlan, err := pc.pu.CreatePlan(plan)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
