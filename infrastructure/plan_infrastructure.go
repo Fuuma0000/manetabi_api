@@ -22,10 +22,18 @@ func NewPlanInfrastructer(db *sql.DB) IPlanInfrastructer {
 
 func (pi *planInfrastructer) CreatePlan(plan *model.Plan) error {
 	q := `INSERT INTO plans (user_id, title, description, thumbnail_path, cost, start_date, end_date, is_public) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-	_, err := pi.db.Exec(q, plan.UserID, plan.Title, plan.Description, plan.Thumbnail, plan.Cost, plan.StartDate, plan.EndDate, plan.IsPublic)
+	res, err := pi.db.Exec(q, plan.UserID, plan.Title, plan.Description, plan.Thumbnail, plan.Cost, plan.StartDate, plan.EndDate, plan.IsPublic)
 	if err != nil {
 		return err
 	}
+
+	// 最後に生成されたIDを取得
+	lastInsertID, err := res.LastInsertId()
+	if err != nil {
+		return err
+	}
+	plan.PlanID = uint(lastInsertID)
+
 	return nil
 }
 
