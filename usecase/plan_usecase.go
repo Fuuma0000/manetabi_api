@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/Fuuma0000/manetabi_api/infrastructure"
 	"github.com/Fuuma0000/manetabi_api/model"
 )
@@ -25,7 +23,6 @@ func (pu *planUsecase) CreatePlan(plan model.Plan) (model.PlanResponse, error) {
 	if err := pu.pi.CreatePlan(&plan); err != nil {
 		return model.PlanResponse{}, err
 	}
-	fmt.Println(plan)
 	resPlan := model.PlanResponse{
 		PlanID:      plan.PlanID,
 		UserID:      plan.UserID,
