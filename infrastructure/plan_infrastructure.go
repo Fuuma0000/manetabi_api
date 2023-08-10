@@ -39,7 +39,7 @@ func (pi *planInfrastructer) GetPlansByUserID(plans *[]model.Plan, userId uint) 
 
 	for rows.Next() {
 		var plan model.Plan
-		if err := rows.Scan(&plan.ID, &plan.UserID, &plan.Title, &plan.Description, &plan.Thumbnail, &plan.Cost, &plan.StartDate, &plan.EndDate, &plan.IsPublic, &plan.CreatedAt, &plan.UpdatedAt); err != nil {
+		if err := rows.Scan(&plan.PlanID, &plan.UserID, &plan.Title, &plan.Description, &plan.Thumbnail, &plan.Cost, &plan.StartDate, &plan.EndDate, &plan.IsPublic, &plan.CreatedAt, &plan.UpdatedAt); err != nil {
 			return err
 		}
 		*plans = append(*plans, plan)
@@ -50,7 +50,7 @@ func (pi *planInfrastructer) GetPlansByUserID(plans *[]model.Plan, userId uint) 
 func (pi *planInfrastructer) GetPlanByID(id int) (model.Plan, error) {
 	plan := model.Plan{}
 	q := `SELECT * FROM plans WHERE plan_id = ? LIMIT 1`
-	err := pi.db.QueryRow(q, id).Scan(&plan.ID, &plan.UserID, &plan.Title, &plan.Description, &plan.Thumbnail, &plan.Cost, &plan.StartDate, &plan.EndDate, &plan.IsPublic, &plan.CreatedAt, &plan.UpdatedAt)
+	err := pi.db.QueryRow(q, id).Scan(&plan.PlanID, &plan.UserID, &plan.Title, &plan.Description, &plan.Thumbnail, &plan.Cost, &plan.StartDate, &plan.EndDate, &plan.IsPublic, &plan.CreatedAt, &plan.UpdatedAt)
 	if err != nil {
 		return model.Plan{}, err
 	}

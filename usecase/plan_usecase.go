@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/Fuuma0000/manetabi_api/infrastructure"
 	"github.com/Fuuma0000/manetabi_api/model"
 )
@@ -23,8 +25,10 @@ func (pu *planUsecase) CreatePlan(plan model.Plan) (model.PlanResponse, error) {
 	if err := pu.pi.CreatePlan(&plan); err != nil {
 		return model.PlanResponse{}, err
 	}
+	fmt.Println(plan)
 	resPlan := model.PlanResponse{
-		ID:          plan.ID,
+		PlanID:      plan.PlanID,
+		UserID:      plan.UserID,
 		Title:       plan.Title,
 		Description: plan.Description,
 		Thumbnail:   plan.Thumbnail,
@@ -46,7 +50,7 @@ func (pu *planUsecase) GetPlansByUserID(userId uint) ([]model.PlanResponse, erro
 	resPlans := []model.PlanResponse{}
 	for _, plan := range plans {
 		resPlan := model.PlanResponse{
-			ID:          plan.ID,
+			PlanID:      plan.PlanID,
 			Title:       plan.Title,
 			Description: plan.Description,
 			Thumbnail:   plan.Thumbnail,
@@ -68,7 +72,7 @@ func (pu *planUsecase) GetPlanByID(id int) (model.PlanResponse, error) {
 		return model.PlanResponse{}, err
 	}
 	resPlan := model.PlanResponse{
-		ID:          plan.ID,
+		PlanID:      plan.PlanID,
 		Title:       plan.Title,
 		Description: plan.Description,
 		Thumbnail:   plan.Thumbnail,
