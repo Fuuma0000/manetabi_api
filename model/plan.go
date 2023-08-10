@@ -4,7 +4,7 @@ import "time"
 
 // Plan プランモデル
 type Plan struct {
-	ID          uint       `json:"id"`
+	PlanID      uint       `json:"plan_id"`
 	UserID      uint       `json:"user_id"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
@@ -19,7 +19,7 @@ type Plan struct {
 }
 
 type PlanResponse struct {
-	ID          uint       `json:"id"`
+	PlanID      uint       `json:"plan_id"`
 	UserID      uint       `json:"user_id"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
