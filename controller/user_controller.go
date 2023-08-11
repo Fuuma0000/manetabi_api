@@ -28,12 +28,12 @@ func (uc *userController) SignUp(c echo.Context) error {
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	b, message, err := uc.uu.CheckDuplicateEmail(user.Email)
+	b, err := uc.uu.CheckDuplicateEmail(user.Email)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	if b { // 重複あり
-		return c.JSON(http.StatusBadRequest, message)
+		return c.JSON(http.StatusBadRequest, "メールアドレスが重複しています")
 	}
 	userRes, err := uc.uu.SignUp(user)
 	if err != nil {

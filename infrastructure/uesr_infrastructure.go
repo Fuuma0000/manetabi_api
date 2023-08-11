@@ -10,7 +10,7 @@ import (
 type IUserInfrastructer interface {
 	CreateUser(user *model.User) error
 	GetUserByEmail(user *model.User, email string) error
-	CheckDuplicateEmail(email string) (bool, string, error)
+	CheckDuplicateEmail(email string) (bool, error)
 }
 
 type userInfrastructer struct {
@@ -46,16 +46,16 @@ func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) erro
 }
 
 // メールアドレスの重複チェック
-func (ui *userInfrastructer) CheckDuplicateEmail(email string) (bool, string, error) {
+func (ui *userInfrastructer) CheckDuplicateEmail(email string) (bool, error) {
 	q := `SELECT COUNT(*) FROM users WHERE email = ?`
 	row := ui.db.QueryRow(q, email)
 	var count int
 	err := row.Scan(&count)
 	if err != nil {
-		return true, "メールアドレスの重複チェックに失敗しました", err
+		return true, err
 	}
 	if count > 0 {
-		return true, "メールアドレスが重複しています", err
+		return true, nil
 	}
-	return false, "", err
+	return false, nil
 }
