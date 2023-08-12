@@ -87,12 +87,13 @@ func (pc *planController) UpdatePlan(c echo.Context) error {
 }
 
 func (pc *planController) DeletePlan(c echo.Context) error {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	PlanIdStr := c.Param("id")
+	planId, err := strconv.Atoi(PlanIdStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, "Invalid ID")
 	}
-	if err := pc.pu.DeletePlan(id); err != nil {
+	userId := c.Get("userID").(uint)
+	if err := pc.pu.DeletePlan(planId, userId); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, "Deleted")

@@ -12,7 +12,7 @@ type IPlanInfrastructer interface {
 	GetPlansByUserID(plans *[]model.Plan, userId uint) error
 	GetPlanByID(id int) (model.Plan, error)
 	UpdatePlan(plan *model.Plan) error
-	DeletePlan(id int) error
+	DeletePlan(planId int, userId uint) error
 }
 
 type planInfrastructer struct {
@@ -87,11 +87,21 @@ func (pi *planInfrastructer) UpdatePlan(plan *model.Plan) error {
 	return nil
 }
 
-func (pi *planInfrastructer) DeletePlan(id int) error {
-	q := `DELETE FROM plans WHERE plan_id = ?`
-	_, err := pi.db.Exec(q, id)
+func (pi *planInfrastructer) DeletePlan(planId int, userId uint) error {
+	fmt.Println(planId, userId)
+	q := `DELETE FROM plans WHERE plan_id = ? AND user_id = ?`
+	result, err := pi.db.Exec(q, planId, userId)
 	if err != nil {
 		return err
+	}
+	// 削除された行数を取得
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	// 削除された行数が0の場合はエラー
+	if rowsAffected == 0 {
+		return fmt.Errorf("object does not exist")
 	}
 	return nil
 }

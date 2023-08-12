@@ -10,7 +10,7 @@ type IPlanUsecase interface {
 	GetPlansByUserID(userId uint) ([]model.PlanResponse, error)
 	GetPlanByID(id int) (model.PlanResponse, error)
 	UpdatePlan(plan model.Plan) (model.PlanResponse, error)
-	DeletePlan(id int) error
+	DeletePlan(id int, userId uint) error
 }
 
 type planUsecase struct {
@@ -105,8 +105,8 @@ func (pu *planUsecase) UpdatePlan(plan model.Plan) (model.PlanResponse, error) {
 	return resPlan, nil
 }
 
-func (pu *planUsecase) DeletePlan(id int) error {
-	if err := pu.pi.DeletePlan(id); err != nil {
+func (pu *planUsecase) DeletePlan(planId int, userId uint) error {
+	if err := pu.pi.DeletePlan(planId, userId); err != nil {
 		return err
 	}
 	return nil
