@@ -18,8 +18,8 @@ func NewRouter(uc controller.IUserController, pc controller.IPlanController, jwt
 	p.Use(middleware.JWTMiddleware(*jwtHandler))
 	p.POST("", pc.CreatePlan)
 	p.GET("", pc.GetPlansByUserID)
-	p.GET("/:id", pc.GetPlanByID)
-	p.PUT("/:id", pc.UpdatePlan)
-	p.DELETE("/:id", pc.DeletePlan)
+	p.GET("/:planId", pc.GetPlanByID)
+	p.PUT("/:planId", pc.UpdatePlan)
+	p.DELETE("/:planId", pc.DeletePlan)
 	return e
 }

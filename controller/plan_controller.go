@@ -54,12 +54,12 @@ func (pc *planController) GetPlansByUserID(c echo.Context) error {
 }
 
 func (pc *planController) GetPlanByID(c echo.Context) error {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	planIdStr := c.Param("planId")
+	planId, err := strconv.Atoi(planIdStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, "Invalid ID")
 	}
-	resPlan, err := pc.pu.GetPlanByID(id)
+	resPlan, err := pc.pu.GetPlanByID(planId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -67,8 +67,8 @@ func (pc *planController) GetPlanByID(c echo.Context) error {
 }
 
 func (pc *planController) UpdatePlan(c echo.Context) error {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	planIdStr := c.Param("planId")
+	planId, err := strconv.Atoi(planIdStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, "Invalid ID")
 	}
@@ -77,7 +77,7 @@ func (pc *planController) UpdatePlan(c echo.Context) error {
 	if err := c.Bind(&plan); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	plan.PlanID = uint(id)
+	plan.PlanID = uint(planId)
 	plan.UserID = userID.(uint)
 	resPlan, err := pc.pu.UpdatePlan(plan)
 	if err != nil {
@@ -87,8 +87,8 @@ func (pc *planController) UpdatePlan(c echo.Context) error {
 }
 
 func (pc *planController) DeletePlan(c echo.Context) error {
-	PlanIdStr := c.Param("id")
-	planId, err := strconv.Atoi(PlanIdStr)
+	planIdStr := c.Param("planId")
+	planId, err := strconv.Atoi(planIdStr)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, "Invalid ID")
 	}
