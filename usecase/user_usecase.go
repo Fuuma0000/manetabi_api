@@ -14,6 +14,7 @@ type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
 	Login(user model.User) (map[string]string, error)
 	CheckDuplicateEmail(email string) (bool, error)
+	// GetUserByEmail(user *model.User, email string) (model.UserResponse, error)
 }
 
 type userUsecase struct {
@@ -53,7 +54,7 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 
 func (uu *userUsecase) Login(user model.User) (map[string]string, error) {
 	storedUser := model.User{}
-	if err := uu.ui.GetUserByEmail(&storedUser, user.Email); err != nil {
+	if err := uu.ui.Login(&storedUser, user.Email); err != nil {
 		return nil, err
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
@@ -82,3 +83,11 @@ func (uu *userUsecase) CheckDuplicateEmail(email string) (bool, error) {
 	}
 	return b, nil
 }
+
+// func (uu *userUsecase) GetUserByEmail(user *model.User, email string) (model.UserResponse, error) {
+// 	resUser := model.UserResponse{}
+// 	if err := uu.ui.GetUserByEmail(&resUser, user.Email); err != nil {
+// 		return nil, err
+// 	}
+// 	return resUser, nil
+// }

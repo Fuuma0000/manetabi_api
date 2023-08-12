@@ -9,7 +9,7 @@ import (
 
 type IUserInfrastructer interface {
 	CreateUser(user *model.User) error
-	GetUserByEmail(user *model.User, email string) error
+	Login(user *model.User, email string) error
 	CheckDuplicateEmail(email string) (bool, error)
 }
 
@@ -30,7 +30,7 @@ func (ui *userInfrastructer) CreateUser(user *model.User) error {
 	return nil
 }
 
-func (ui *userInfrastructer) GetUserByEmail(user *model.User, email string) error {
+func (ui *userInfrastructer) Login(user *model.User, email string) error {
 	q := `SELECT * FROM users WHERE email = ? LIMIT 1`
 	row := ui.db.QueryRow(q, email)
 
