@@ -11,6 +11,7 @@ type IUserInfrastructer interface {
 	CreateUser(user *model.User) error
 	Login(user *model.User, email string) error
 	CheckDuplicateEmail(email string) (bool, error)
+	GetUserByEmail(user *model.UserResponse, email string) error
 }
 
 type userInfrastructer struct {
@@ -58,4 +59,19 @@ func (ui *userInfrastructer) CheckDuplicateEmail(email string) (bool, error) {
 		return true, nil
 	}
 	return false, nil
+}
+
+func (ui *userInfrastructer) GetUserByEmail(user *model.UserResponse, email string) error {
+	q := `SELECT user_id, user_name, email, profile_image_path, created_at, updated_at FROM users WHERE email = ? LIMIT 1`
+	row := ui.db.QueryRow(q, email)
+
+	err := row.Scan(&user.ID, &user.UserName, &user.Email, &user.ProfileImagePath, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("ユーザーが見つかりませんでした")
+		}
+		return err
+	}
+
+	return nil
 }

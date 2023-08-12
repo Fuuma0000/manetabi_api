@@ -14,7 +14,7 @@ type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
 	Login(user model.User) (map[string]string, error)
 	CheckDuplicateEmail(email string) (bool, error)
-	// GetUserByEmail(user *model.User, email string) (model.UserResponse, error)
+	GetUserByEmail(email string) (model.UserResponse, error)
 }
 
 type userUsecase struct {
@@ -84,10 +84,10 @@ func (uu *userUsecase) CheckDuplicateEmail(email string) (bool, error) {
 	return b, nil
 }
 
-// func (uu *userUsecase) GetUserByEmail(user *model.User, email string) (model.UserResponse, error) {
-// 	resUser := model.UserResponse{}
-// 	if err := uu.ui.GetUserByEmail(&resUser, user.Email); err != nil {
-// 		return nil, err
-// 	}
-// 	return resUser, nil
-// }
+func (uu *userUsecase) GetUserByEmail(email string) (model.UserResponse, error) {
+	resUser := model.UserResponse{}
+	if err := uu.ui.GetUserByEmail(&resUser, email); err != nil {
+		return model.UserResponse{}, err
+	}
+	return resUser, nil
+}

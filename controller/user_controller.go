@@ -11,6 +11,7 @@ import (
 type IUserController interface {
 	SignUp(c echo.Context) error
 	Login(c echo.Context) error
+	GetUserByEmail(c echo.Context) error
 }
 
 type userController struct {
@@ -54,4 +55,13 @@ func (uc *userController) Login(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, response)
+}
+
+func (uc *userController) GetUserByEmail(c echo.Context) error {
+	email := c.QueryParam("email")
+	userRes, err := uc.uu.GetUserByEmail(email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, userRes)
 }

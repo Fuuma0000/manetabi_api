@@ -13,6 +13,7 @@ func NewRouter(uc controller.IUserController, pc controller.IPlanController, jwt
 	// ここにルーティングを書いていく
 	e.POST("/signup", uc.SignUp)
 	e.POST("/login", uc.Login)
+	e.GET("/user", uc.GetUserByEmail)
 	p := e.Group("/plans")
 	// JWTMiddlewareを適用
 	p.Use(middleware.JWTMiddleware(*jwtHandler))
