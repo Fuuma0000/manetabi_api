@@ -69,7 +69,7 @@ func (pi *planInfrastructer) GetPlanByID(id int) (model.Plan, error) {
 }
 
 func (pi *planInfrastructer) UpdatePlan(plan *model.Plan) error {
-	q := `UPDATE plans SET title = ?, description = ?, thumbnail_path = ?, cost = ?, start_date = ?, end_date = ?, is_public = ? WHERE plan_id = ? & user_id = ?`
+	q := `UPDATE plans SET title = ?, description = ?, thumbnail_path = ?, cost = ?, start_date = ?, end_date = ?, is_public = ? WHERE plan_id = ? AND user_id = ?`
 	result, err := pi.db.Exec(q, plan.Title, plan.Description, plan.Thumbnail, plan.Cost, plan.StartDate, plan.EndDate, plan.IsPublic, plan.PlanID, plan.UserID)
 	if err != nil {
 		return err
