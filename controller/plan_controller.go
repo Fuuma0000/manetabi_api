@@ -13,6 +13,8 @@ type IPlanController interface {
 	CreatePlan(c echo.Context) error
 	GetPlansByUserID(c echo.Context) error
 	GetPlanByID(c echo.Context) error
+	UpdatePlan(c echo.Context) error
+	DeletePlan(c echo.Context) error
 }
 
 type planController struct {
@@ -62,4 +64,36 @@ func (pc *planController) GetPlanByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, resPlan)
+}
+
+func (pc *planController) UpdatePlan(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid ID")
+	}
+	userID := c.Get("userID")
+	plan := model.Plan{}
+	if err := c.Bind(&plan); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	plan.PlanID = uint(id)
+	plan.UserID = userID.(uint)
+	resPlan, err := pc.pu.UpdatePlan(plan)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, resPlan)
+}
+
+func (pc *planController) DeletePlan(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid ID")
+	}
+	if err := pc.pu.DeletePlan(id); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "Deleted")
 }
