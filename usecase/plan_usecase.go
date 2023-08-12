@@ -50,6 +50,7 @@ func (pu *planUsecase) GetPlansByUserID(userId uint) ([]model.PlanResponse, erro
 	for _, plan := range plans {
 		resPlan := model.PlanResponse{
 			PlanID:      plan.PlanID,
+			UserID:      plan.UserID,
 			Title:       plan.Title,
 			Description: plan.Description,
 			Thumbnail:   plan.Thumbnail,
@@ -72,6 +73,7 @@ func (pu *planUsecase) GetPlanByID(id int) (model.PlanResponse, error) {
 	}
 	resPlan := model.PlanResponse{
 		PlanID:      plan.PlanID,
+		UserID:      plan.UserID,
 		Title:       plan.Title,
 		Description: plan.Description,
 		Thumbnail:   plan.Thumbnail,
