@@ -24,10 +24,18 @@ func NewUserInfrastructer(db *sql.DB) IUserInfrastructer {
 
 func (ui *userInfrastructer) CreateUser(user *model.User) error {
 	q := `INSERT INTO users (user_name, email, password, profile_image_path) VALUES (?, ?, ?, ?)`
-	_, err := ui.db.Exec(q, user.UserName, user.Email, user.Password, user.ProfileImagePath)
+	result, err := ui.db.Exec(q, user.UserName, user.Email, user.Password, user.ProfileImagePath)
 	if err != nil {
 		return err
 	}
+
+	// 最後に挿入された行のIDを取得
+	lastInsertID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	user.ID = uint(lastInsertID)
 	return nil
 }
 

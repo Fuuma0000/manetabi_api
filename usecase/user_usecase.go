@@ -35,6 +35,7 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 		return model.UserResponse{}, err
 	}
 	newUser := model.User{
+		ID:               user.ID,
 		UserName:         user.UserName,
 		Email:            user.Email,
 		Password:         string(hash),
