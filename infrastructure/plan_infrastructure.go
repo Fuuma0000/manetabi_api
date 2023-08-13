@@ -41,7 +41,7 @@ func (pi *planInfrastructer) CreatePlan(plan *model.Plan) error {
 }
 
 func (pi *planInfrastructer) GetPlansByUserID(plans *[]model.Plan, userId uint) error {
-	q := `SELECT * FROM plans WHERE user_id = ? & is_public = 1`
+	q := `SELECT * FROM plans WHERE user_id = ? AND is_public = 1` // is_public = 1 は公開プランのみ取得するため
 	rows, err := pi.db.Query(q, userId)
 	if err != nil {
 		return err
